@@ -5,6 +5,7 @@ public class Freezer : MonoBehaviour
     public CambioDollyTrackObjetos dollyTrackManager; // Referencia al script CambioDollyTrackObjetos
     public GameObject activador;
     public Animator freezerAnim;
+    public Animator canvasRefrigerador;
 
     private bool isOpen = false;
 
@@ -43,6 +44,7 @@ public class Freezer : MonoBehaviour
         if (freezerAnim != null)
         {
             freezerAnim.SetBool("abierto", true);
+            canvasRefrigerador.SetBool("canvasActivado", true);
             Debug.Log("Refrigerador abierto");
         }
         isOpen = true;
@@ -53,6 +55,7 @@ public class Freezer : MonoBehaviour
         if (freezerAnim != null)
         {
             freezerAnim.SetBool("abierto", false);
+            canvasRefrigerador.SetBool("canvasActivado", false);
             Debug.Log("Refrigerador cerrado");
         }
 
