@@ -13,6 +13,7 @@ public class DollyTrackManager : MonoBehaviour
 
     void Start()
     {
+        virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = dollyTrackCenter;
         // Almacenar la rotación inicial de la cámara
         previousRotation = cameraTransform.rotation;
     }
