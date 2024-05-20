@@ -7,6 +7,8 @@ TagManager:
   - MuerteComida
   - Televisor
   - Refrigerador
+  - Carne
+  - CarneMala
   layers:
   - Default
   - TransparentFX

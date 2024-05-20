@@ -5,13 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerBotones : MonoBehaviour
 {
-    public void Salir()
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
+    public void SalirAlInicio()
     {
         SceneManager.LoadScene(0);
+        
     }
-    public void Riniciar()
+    public void SalirAlMenu()
     {
         SceneManager.LoadScene(1);
+       
+    }
+
+    public void Reiniciar()
+    {
+        
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex); // Cargar la escena actual
+        
     }
     public void SalirDelJuego()
     {
@@ -21,5 +35,7 @@ public class SceneManagerBotones : MonoBehaviour
     public void Muerte()
     {
         SceneManager.LoadScene(2);
+        
     }
+
 }
