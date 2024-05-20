@@ -1,95 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GG.Infrastructure.Utils.Swipe;
 
 public class TouchManager : MonoBehaviour
 {
-    //The variables
-    public Transform playerCam; 
-    public int rotateSpeed, limitRight, limitLeft;
-    public bool ADKeys, movingLeft, movingRight;
-    //public int targetFramerate;
+    // The variables
+    public Transform playerCam;
+    public float rotateSpeed = 10f; // Aumenta la velocidad para rotación continua
+    public float limitRight = 45f;
+    public float limitLeft = -45f;
+    public SwipeListener swipeListener;
 
-    //Sets frame rate of game
-    void Start()
+    private bool isRotating = false;
+    private float rotationDirection = 0f;
+
+    private void OnEnable()
     {
-        //Application.targetFrameRate = targetFramerate;
+        swipeListener.OnSwipe.AddListener(OnSwipe);
+    }
+
+    private void OnDisable()
+    {
+        swipeListener.OnSwipe.RemoveListener(OnSwipe);
     }
 
     void Update()
     {
-        //If ADKeys is == true, you can rotate the camera left and right with the A and D keys. Leave false if you want to use regular FNAF camera style.
-        if(ADKeys == true)
+        if (isRotating)
         {
-            //When you hold A, the camera will rotate left.
-            if (Input.GetKey(KeyCode.A))
-            {
-                if (playerCam.localRotation == Quaternion.Euler(0, -135, 0))
-                {
-
-                }
-                else
-                {
-                    playerCam.Rotate(0, -rotateSpeed, 0);
-                }
-            }
-            //When you hold D, the camera will rotate right.
-            if (Input.GetKey(KeyCode.D))
-            {
-                if (playerCam.localRotation == Quaternion.Euler(0, -45, 0))
-                {
-
-                }
-                else
-                {
-                    playerCam.Rotate(0, rotateSpeed, 0);
-                }
-            }
-        }
-        //If ADKeys is == false, the normal FNAF camera rotation will be in play.
-        if(ADKeys == false)
-        {
-            //If either movingLeft or movingRight is == true, the camera will rotate left or right.
-            if(movingLeft == true)
-            {
-                if (playerCam.localRotation == Quaternion.Euler(0, -0, 0))
-                {
-
-                }
-                else
-                {
-                    playerCam.Rotate(0, -rotateSpeed, 0);
-                }
-            }
-            if(movingRight == true)
-            {
-                if (playerCam.localRotation == Quaternion.Euler(0, 0, 0))
-                {
-
-                }
-                else
-                {
-                    playerCam.Rotate(0, rotateSpeed, 0);
-                }
-            }
+            RotateCamera(rotationDirection * rotateSpeed * Time.deltaTime);
         }
     }
-    //When the cursor is hovering over the button with the Trigger Event applied, depending on whether it's the left or right button, the camera will start rotating left or right.
-    //Upon the cursor exiting the button, the rotating will stop.
-    public void rotateLeft()
+
+    void OnSwipe(string swipe)
     {
-        movingLeft = true;
+        Debug.Log(swipe);
+        if (swipe == "Right")
+        {
+            isRotating = true;
+            rotationDirection = -1f; // Positive value for right rotation
+        }
+        else if (swipe == "Left")
+        {
+            isRotating = true;
+            rotationDirection = 1f; // Negative value for left rotation
+        }
+        else
+        {
+            isRotating = false;
+        }
     }
-    public void rotateRight()
+
+    void RotateCamera(float rotationAmount)
     {
-        movingRight = true;
+        playerCam.Rotate(0, rotationAmount, 0);
+        ClampCameraRotation();
+
+        // Verificar si el ángulo Y está en el rango permitido
+        float yRotation = playerCam.eulerAngles.y;
+        if (yRotation > 180)
+        {
+            yRotation -= 360;
+        }
+
+        if (yRotation >= -90.5f && yRotation <= -89.5f)
+        {
+            isRotating = false;
+        }
     }
-    public void stopRotateLeft()
+
+    void ClampCameraRotation()
     {
-        movingLeft = false;
-    }
-    public void stopRotateRight()
-    {
-        movingRight = false;
+        float yRotation = playerCam.eulerAngles.y;
+        if (yRotation > 180)
+        {
+            yRotation -= 360;
+        }
+
+        yRotation = Mathf.Clamp(yRotation, limitLeft, limitRight);
+        playerCam.eulerAngles = new Vector3(playerCam.eulerAngles.x, yRotation, playerCam.eulerAngles.z);
     }
 }
