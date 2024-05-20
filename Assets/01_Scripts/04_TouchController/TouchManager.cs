@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using GG.Infrastructure.Utils.Swipe;
+using Cinemachine;
 
 public class TouchManager : MonoBehaviour
 {
@@ -11,9 +10,11 @@ public class TouchManager : MonoBehaviour
     public float limitRight = 45f;
     public float limitLeft = -45f;
     public SwipeListener swipeListener;
+    public CinemachineVirtualCamera virtualCamera; // Referencia a la cámara virtual
 
     private bool isRotating = false;
     private float rotationDirection = 0f;
+    private CinemachineTrackedDolly trackedDolly;
 
     private void OnEnable()
     {
@@ -25,9 +26,15 @@ public class TouchManager : MonoBehaviour
         swipeListener.OnSwipe.RemoveListener(OnSwipe);
     }
 
+    private void Start()
+    {
+        // Obtener el componente CinemachineTrackedDolly de la cámara virtual
+        trackedDolly = virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+    }
+
     void Update()
     {
-        if (isRotating)
+        if (isRotating && CanRotateCamera())
         {
             RotateCamera(rotationDirection * rotateSpeed * Time.deltaTime);
         }
@@ -36,15 +43,17 @@ public class TouchManager : MonoBehaviour
     void OnSwipe(string swipe)
     {
         Debug.Log(swipe);
-        if (swipe == "Right")
+        if (swipe == "Right" || swipe == "Left")
         {
-            isRotating = true;
-            rotationDirection = -1f; // Positive value for right rotation
-        }
-        else if (swipe == "Left")
-        {
-            isRotating = true;
-            rotationDirection = 1f; // Negative value for left rotation
+            if (CanRotateCamera())
+            {
+                isRotating = true;
+                rotationDirection = swipe == "Right" ? -1f : 1f; // Positive value for right rotation, negative for left
+            }
+            else
+            {
+                isRotating = false;
+            }
         }
         else
         {
@@ -80,5 +89,11 @@ public class TouchManager : MonoBehaviour
 
         yRotation = Mathf.Clamp(yRotation, limitLeft, limitRight);
         playerCam.eulerAngles = new Vector3(playerCam.eulerAngles.x, yRotation, playerCam.eulerAngles.z);
+    }
+
+    bool CanRotateCamera()
+    {
+        // Verificar si la posición del dolly track es menor o igual a 0.25
+        return trackedDolly != null && trackedDolly.m_PathPosition <= 0.25f;
     }
 }

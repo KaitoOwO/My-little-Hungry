@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+
 public class CambioDollyTrackObjetos : MonoBehaviour
 {
     public CinemachineVirtualCamera virtualCamera; // Referencia a la cámara virtual
@@ -33,5 +34,12 @@ public class CambioDollyTrackObjetos : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Método para restablecer el dolly track a la posición 0
+    public void ResetDollyTrack()
+    {
+        virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 0f;
+        Debug.Log("Dolly track reseteado a 0");
     }
 }
