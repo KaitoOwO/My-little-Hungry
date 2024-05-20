@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 public class BarrasDeVida : MonoBehaviour
 {
+   
+
     public Image hambreBarra; // Asigna la imagen circular desde el Inspector
     public float hambreDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+
     public Image carinoBarra; // Asigna la imagen circular desde el Inspector
+    public float carinoIncremento = 0.1f; // Incremento de la barra de cariño al tocar la mascota
     public float carinoDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+
     public Image diversionBarra; // Asigna la imagen circular desde el Inspector
     public float diversionDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+
     public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector
 
     void Start()
@@ -23,6 +29,8 @@ public class BarrasDeVida : MonoBehaviour
 
     void Update()
     {
+      
+
         // Reduce la barra de hambre con el tiempo
         hambreBarra.fillAmount -= hambreDecayRate * Time.deltaTime;
         // Reduce la barra de hambre con el tiempo
@@ -38,5 +46,10 @@ public class BarrasDeVida : MonoBehaviour
             // Reproduce la animación de hambre
             petAnimator.SetTrigger("IsHungry");
         }
+    }
+    void OnMouseOver()
+    {
+        // Incrementa la barra de cariño mientras el mouse está sobre la mascota
+        carinoBarra.fillAmount += carinoIncremento * Time.deltaTime;
     }
 }
