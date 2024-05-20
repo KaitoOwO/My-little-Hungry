@@ -9,6 +9,7 @@ TagManager:
   - Refrigerador
   - Carne
   - CarneMala
+  - Ground
   layers:
   - Default
   - TransparentFX
