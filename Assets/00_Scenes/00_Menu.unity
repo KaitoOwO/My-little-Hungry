@@ -913,7 +913,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 312641383}
         m_TargetAssemblyTypeName: SceneManagerBotones, Assembly-CSharp
-        m_MethodName: Riniciar
+        m_MethodName: SalirAlMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
