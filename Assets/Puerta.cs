@@ -29,7 +29,7 @@ public class Puerta : MonoBehaviour
                         // Si está abierto, cerrarlo
                         CloseDoor();
                     }
-                    else
+                    else if (!isOpen)
                     {
                         // Si está cerrado, abrirlo
                         OpenDoor();

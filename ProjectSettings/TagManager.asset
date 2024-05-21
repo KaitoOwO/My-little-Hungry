@@ -11,6 +11,7 @@ TagManager:
   - CarneMala
   - Ground
   - Death
+  - Puerta
   layers:
   - Default
   - TransparentFX
