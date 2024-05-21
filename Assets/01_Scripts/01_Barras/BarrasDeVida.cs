@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +6,7 @@ public class BarrasDeVida : MonoBehaviour
     public Image hambreBarra; // Asigna la imagen circular desde el Inspector
     public float hambreDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
     public float hambreIncremento = 100f;
-
-
+    
     public Image carinoBarra; // Asigna la imagen circular desde el Inspector
     public float carinoIncremento = 0.1f; // Incremento de la barra de cari�o al tocar la mascota
     public float carinoDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
@@ -18,7 +15,23 @@ public class BarrasDeVida : MonoBehaviour
     public float diversionDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
 
     public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector
+    void Awake()
+    {
+        // Verificar si es la primera vez que se ejecuta la aplicación
+        if (!PlayerPrefs.HasKey("FirstTime"))
+        {
+            // Establecer la bandera de la primera vez
+            PlayerPrefs.SetInt("FirstTime", 1);
 
+            // Asignar los valores predeterminados
+            PlayerPrefs.SetFloat("hambre", 1f);
+            PlayerPrefs.SetFloat("carino", 1f);
+            PlayerPrefs.SetFloat("diversion", 1f);
+
+            // Guardar los cambios
+            PlayerPrefs.Save();
+        }
+    }
     void Start()
     {
         // Inicializa la barra de hambre al m�ximo
