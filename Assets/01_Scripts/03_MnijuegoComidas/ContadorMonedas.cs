@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -32,8 +30,8 @@ public class ContadorMonedas : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Carne"))
         {
-            // Añadir una moneda al DineroManager
-            dineroManager.AñadirDinero(1);
+            // Aï¿½adir una moneda al DineroManager
+            dineroManager.AnadirDinero(1);
 
             // Destruir la moneda
             Destroy(other.gameObject);
