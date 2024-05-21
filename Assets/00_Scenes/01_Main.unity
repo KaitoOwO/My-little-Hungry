@@ -7060,6 +7060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c5d406ba5b5844493996b36ecbb768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 988187409}
+  dollyTrackCenter: {fileID: 115253585}
   virtualCamera: {fileID: 988187408}
 --- !u!4 &1278059176
 Transform:

@@ -13,6 +13,7 @@ public class SceneManagerBotones : MonoBehaviour
     }
     public void SalirAlMenu()
     {
+        PlayerPrefs.SetFloat("diversion", 1f);
         SceneManager.LoadScene(1);
     }
 
@@ -36,12 +37,10 @@ public class SceneManagerBotones : MonoBehaviour
     public void MiniScrap()
     {
         SceneManager.LoadScene(3);
-        PlayerPrefs.SetFloat("diversion", 1f);
     }
     public void MiniRun()
     {
         SceneManager.LoadScene(4);
-        PlayerPrefs.SetFloat("diversion", 1f);
     }
 
 }
