@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControllerRun : MonoBehaviour
 {
     public float jumpForce = 10f;
+    public GameObject gameOverPanel;
+    public GameObject death;
     private Rigidbody rb;
     private bool isGrounded;
 
@@ -18,6 +18,10 @@ public class PlayerControllerRun : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+        if(gameObject.transform.position.x <= death.transform.position.x)
+        {
+            GameOver();
         }
     }
 
@@ -35,5 +39,10 @@ public class PlayerControllerRun : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+    private void GameOver()
+    {
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 }

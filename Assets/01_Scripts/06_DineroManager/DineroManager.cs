@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -29,34 +26,34 @@ public class DineroManager : MonoBehaviour
     {
         // Guardar el dinero actual en PlayerPrefs
         PlayerPrefs.SetInt("Dinero", dineroActual);
-        PlayerPrefs.Save(); // Asegúrate de guardar los cambios
+        PlayerPrefs.Save(); // AsegÃºrate de guardar los cambios
     }
     private void UpdateDineroUI()
     {
         dineroContador.text = "Dinero: " + dineroActual.ToString();
     }
 
-    // Método para añadir dinero
-    public void AñadirDinero(int cantidad)
+    // MÃ©todo para aÃ±adir dinero
+    public void AnadirDinero(int cantidad)
     {
         dineroActual += cantidad;
         GuardarDinero(); // Guardar el dinero actualizado
     }
 
-    // Método para restar dinero
+    // MÃ©todo para restar dinero
     public void RestarDinero(int cantidad)
     {
         dineroActual -= cantidad;
         GuardarDinero(); // Guardar el dinero actualizado
     }
 
-    // Método para obtener el dinero actual
+    // MÃ©todo para obtener el dinero actual
     public int ObtenerDinero()
     {
         return dineroActual;
     }
 
-    // Método para reiniciar el dinero a cero
+    // MÃ©todo para reiniciar el dinero a cero
     public void ReiniciarDinero()
     {
         dineroActual = 0;
@@ -70,14 +67,14 @@ public class DineroManager : MonoBehaviour
             // Restar 50 de dinero al comprar comida
             RestarDinero(50);
             Debug.Log("Comida comprada. Dinero restante: " + dineroActual);
-            // Aquí colocarías el código para activar la lógica de comprar la comida
+            // AquÃ­ colocarÃ­as el cÃ³digo para activar la lÃ³gica de comprar la comida
 
             comidaComprada.SetActive(true);
         }
         else
         {
             Debug.Log("No tienes suficiente dinero para comprar comida.");
-            // Aquí colocarías el código para mostrar un mensaje al jugador indicando que no tiene suficiente dinero
+            // AquÃ­ colocarÃ­as el cÃ³digo para mostrar un mensaje al jugador indicando que no tiene suficiente dinero
         }
     }
 }

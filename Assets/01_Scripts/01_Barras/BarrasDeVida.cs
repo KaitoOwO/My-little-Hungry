@@ -13,7 +13,7 @@ public class BarrasDeVida : MonoBehaviour
 
 
     public Image carinoBarra; // Asigna la imagen circular desde el Inspector
-    public float carinoIncremento = 0.1f; // Incremento de la barra de cariño al tocar la mascota
+    public float carinoIncremento = 0.1f; // Incremento de la barra de cariï¿½o al tocar la mascota
     public float carinoDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
 
     public Image diversionBarra; // Asigna la imagen circular desde el Inspector
@@ -23,7 +23,7 @@ public class BarrasDeVida : MonoBehaviour
 
     void Start()
     {
-        // Inicializa la barra de hambre al máximo
+        // Inicializa la barra de hambre al mï¿½ximo
         hambreBarra.fillAmount = 1f;
         carinoBarra.fillAmount = 1f;
         diversionBarra.fillAmount = 1f;
@@ -31,8 +31,6 @@ public class BarrasDeVida : MonoBehaviour
 
     void Update()
     {
-      
-
         // Reduce la barra de hambre con el tiempo
         hambreBarra.fillAmount -= hambreDecayRate * Time.deltaTime;
         // Reduce la barra de hambre con el tiempo
@@ -43,9 +41,9 @@ public class BarrasDeVida : MonoBehaviour
         // Comprueba si la barra de hambre ha llegado a cero
         if (hambreBarra.fillAmount <= 0)
         {
-            hambreBarra.fillAmount = 0; // Asegúrate de que no vaya por debajo de cero
+            hambreBarra.fillAmount = 0; // Asegï¿½rate de que no vaya por debajo de cero
 
-            // Reproduce la animación de hambre
+            // Reproduce la animaciï¿½n de hambre
             petAnimator.SetTrigger("IsHungry");
         }
     }
@@ -59,7 +57,7 @@ public class BarrasDeVida : MonoBehaviour
 
     void OnMouseOver()
     {
-        // Incrementa la barra de cariño mientras el mouse está sobre la mascota
+        // Incrementa la barra de cariï¿½o mientras el mouse estï¿½ sobre la mascota
         carinoBarra.fillAmount += carinoIncremento * Time.deltaTime;
     }
 }

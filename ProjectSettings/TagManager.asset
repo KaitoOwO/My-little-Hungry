@@ -10,6 +10,7 @@ TagManager:
   - Carne
   - CarneMala
   - Ground
+  - Death
   layers:
   - Default
   - TransparentFX
