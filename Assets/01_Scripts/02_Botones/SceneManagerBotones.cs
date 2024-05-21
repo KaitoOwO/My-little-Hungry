@@ -37,5 +37,13 @@ public class SceneManagerBotones : MonoBehaviour
         SceneManager.LoadScene(2);
         
     }
+    public void MiniScrap()
+    {
+        SceneManager.LoadScene(3);
+    }
+    public void MiniRun()
+    {
+        SceneManager.LoadScene(4);
+    }
 
 }

@@ -9,6 +9,8 @@ public class BarrasDeVida : MonoBehaviour
 
     public Image hambreBarra; // Asigna la imagen circular desde el Inspector
     public float hambreDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+    public float hambreIncremento = 100f;
+
 
     public Image carinoBarra; // Asigna la imagen circular desde el Inspector
     public float carinoIncremento = 0.1f; // Incremento de la barra de cariño al tocar la mascota
@@ -47,6 +49,14 @@ public class BarrasDeVida : MonoBehaviour
             petAnimator.SetTrigger("IsHungry");
         }
     }
+    public void SubirHambre()
+    {
+        hambreBarra.fillAmount += hambreIncremento / 100f;
+
+        // Asegurarse de que la barra no supere 1
+        hambreBarra.fillAmount = Mathf.Clamp01(hambreBarra.fillAmount);
+    }
+
     void OnMouseOver()
     {
         // Incrementa la barra de cariño mientras el mouse está sobre la mascota
