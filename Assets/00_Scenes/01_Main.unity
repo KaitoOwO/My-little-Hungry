@@ -8540,7 +8540,7 @@ MonoBehaviour:
   hambreIncremento: 100
   carinoBarra: {fileID: 1523497951}
   carinoIncremento: 0.4
-  carinoDecayRate: 0.004
+  carinoDecayRate: 0.02
   diversionBarra: {fileID: 250690300}
   diversionDecayRate: 0.008
   petAnimator: {fileID: 1629813398}
