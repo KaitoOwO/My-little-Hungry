@@ -21,12 +21,11 @@ public class Environment : MonoBehaviour
 
     public List<GameObject> obstaculos;
 
-    private void Update()
+    private void FixedUpdate()
     {
         ManageMovement();
         ManageParallax();
         ManageSpawnCicle();
-        ManageSpawnObstaculos();
     }
     void ManageMovement()
     {
@@ -45,17 +44,6 @@ public class Environment : MonoBehaviour
             if(prop.transform.position.x <= end.position.x)
             {
                 prop.transform.position = new Vector3(start.position.x, prop.transform.position.y, prop.transform.position.z);
-            }
-        }
-    }
-
-    void ManageSpawnObstaculos()
-    {
-        foreach (GameObject obstaculos in obstaculos)
-        {
-            if (obstaculos.transform.position.x <= end.position.x)
-            {
-                obstaculos.transform.position = new Vector3(start.position.x, obstaculos.transform.position.y, obstaculos.transform.position.z);
             }
         }
     }
