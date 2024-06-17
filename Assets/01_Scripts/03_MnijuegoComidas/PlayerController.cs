@@ -1,57 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Camera mainCamera;
-    private float initialY;
-    private float initialZ;
+    public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector
 
-   
+    public enum PetState { Awake, Asleep }
+    public PetState currentPetState;
 
-    // Límites fijos para el movimiento en el eje X
-    private float minX = -4.7f;
-    private float maxX = 4.6f;
+    void Awake()
+    {
+        // Verificar si es la primera vez que se ejecuta la aplicaciÃ³n
+        if (!PlayerPrefs.HasKey("FirstTime"))
+        {
+            // Establecer la bandera de la primera vez
+            PlayerPrefs.SetInt("FirstTime", 1);
+
+            // Asignar los valores predeterminados
+            PlayerPrefs.SetFloat("hambre", 1f);
+            PlayerPrefs.SetFloat("carino", 1f);
+            PlayerPrefs.SetFloat("diversion", 1f);
+
+            // Guardar los cambios
+            PlayerPrefs.Save();
+        }
+    }
 
     void Start()
     {
-        // Obtener la cámara principal
-        mainCamera = Camera.main;
+        // Establecer siempre el estado de la mascota a Asleep al iniciar el juego
+        currentPetState = PetState.Asleep;
+        PlayerPrefs.SetInt("petState", (int)currentPetState);
+        PlayerPrefs.Save(); // Asegurar que el estado se guarde
 
-        // Guardar la posición inicial en Y y Z del GameObject
-        initialY = transform.position.y;
-        initialZ = transform.position.z;
+        // Establecer el parÃ¡metro del animator
+        petAnimator.SetBool("dormido", true);
     }
 
-    void Update()
+    public void SetPetStateToAwake()
     {
-        // Si hay una entrada táctil
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Began)
-            {
-                // Convertir la posición del toque en coordenadas de mundo
-                Vector3 touchPosition = mainCamera.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, -mainCamera.transform.position.z));
-                MoveGameObject(touchPosition.x);
-            }
-        }
-        // Si es entrada de mouse
-        else if (Input.GetMouseButton(0))
-        {
-            // Convertir la posición del mouse en coordenadas de mundo
-            Vector3 mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
-            MoveGameObject(mousePosition.x);
-        }
+        currentPetState = PetState.Awake;
+        PlayerPrefs.SetInt("petState", (int)currentPetState);
+        PlayerPrefs.Save();
+        petAnimator.SetBool("dormido", false);
     }
 
-    private void MoveGameObject(float xPosition)
+    public void SetPetStateToAsleep()
     {
-        // Limitar la posición en X dentro de los límites fijos
-        xPosition = Mathf.Clamp(xPosition, minX, maxX);
+        currentPetState = PetState.Asleep;
+        PlayerPrefs.SetInt("petState", (int)currentPetState);
+        PlayerPrefs.Save();
+        petAnimator.SetBool("dormido", true);
+    }
 
-        // Mover el GameObject solo en el eje X, manteniendo Y y Z constantes
-        transform.position = new Vector3(xPosition, initialY, initialZ);
+    public bool IsPetAwake()
+    {
+        return currentPetState == PetState.Awake;
     }
 }

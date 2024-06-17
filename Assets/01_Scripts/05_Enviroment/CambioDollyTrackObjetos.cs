@@ -3,22 +3,29 @@ using Cinemachine;
 
 public class CambioDollyTrackObjetos : MonoBehaviour
 {
+    public PlayerController playerController;
     public Transform cameraTransform; // Referencia al transform de la cámara
     public CinemachineSmoothPath dollyTrackCenter; // Dolly track para el centro
     public CinemachineVirtualCamera virtualCamera; // Referencia a la cámara virtual
     private float rotationY;
-
     private Quaternion previousRotation;
+
     void Update()
     {
+        // Verificar si la mascota está despierta
+        if (!playerController.IsPetAwake())
+        {
+            return; // Si la mascota no está despierta, salir del método Update
+        }
+
         if (cameraTransform.rotation != previousRotation)
         {
-        rotationY = cameraTransform.rotation.eulerAngles.y;
+            rotationY = cameraTransform.rotation.eulerAngles.y;
 
             if (rotationY > 265 && rotationY < 275)
             {
-             virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = dollyTrackCenter;
-             Debug.Log("Dolly track center asignado");
+                virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = dollyTrackCenter;
+                Debug.Log("Dolly track center asignado");
 
                 // Verificar si se hace clic con el mouse
                 if (Input.GetMouseButtonDown(0))
@@ -32,15 +39,18 @@ public class CambioDollyTrackObjetos : MonoBehaviour
                     {
                         // Verificar el nombre del objeto clicado y modificar el dolly track correspondiente
                         switch (hit.collider.gameObject.tag)
-                            {
-                                case "Televisor":
+                        {
+                            case "Televisor":
                                 virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
                                 break;
-                            }
+                        }
                     }
                 }
             }
         }
+
+        // Actualizar la rotación anterior de la cámara
+        previousRotation = cameraTransform.rotation;
     }
 
     // Método para restablecer el dolly track a la posición 0

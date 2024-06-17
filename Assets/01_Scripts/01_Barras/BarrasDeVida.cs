@@ -8,13 +8,16 @@ public class BarrasDeVida : MonoBehaviour
     public float hambreIncremento = 100f;
     
     public Image carinoBarra; // Asigna la imagen circular desde el Inspector
-    public float carinoIncremento = 0.1f; // Incremento de la barra de cari�o al tocar la mascota
-    public float carinoDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+    public float carinoIncremento = 0.1f; // Incremento de la barra de cariño al tocar la mascota
+    public float carinoDecayRate = 0.1f; // La velocidad a la que disminuye la barra de cariño
 
     public Image diversionBarra; // Asigna la imagen circular desde el Inspector
-    public float diversionDecayRate = 0.1f; // La velocidad a la que disminuye la barra de hambre
+    public float diversionDecayRate = 0.1f; // La velocidad a la que disminuye la barra de diversión
 
-    public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector
+    public PlayerController playerController;
+
+    private float stateModifier = 1f;
+
     void Awake()
     {
         // Verificar si es la primera vez que se ejecuta la aplicación
@@ -27,48 +30,58 @@ public class BarrasDeVida : MonoBehaviour
             PlayerPrefs.SetFloat("hambre", 1f);
             PlayerPrefs.SetFloat("carino", 1f);
             PlayerPrefs.SetFloat("diversion", 1f);
+            PlayerPrefs.SetInt("petState", (int)PlayerController.PetState.Asleep);
 
             // Guardar los cambios
             PlayerPrefs.Save();
         }
     }
+
     void Start()
     {
-        // Inicializa la barra de hambre al m�ximo
+        // Inicializa las barras 
         hambreBarra.fillAmount = PlayerPrefs.GetFloat("hambre");
         carinoBarra.fillAmount = PlayerPrefs.GetFloat("carino");
         diversionBarra.fillAmount = PlayerPrefs.GetFloat("diversion");
+
+        // Recuperar el estado de la mascota
+        playerController.currentPetState = (PlayerController.PetState)PlayerPrefs.GetInt("petState", (int)PlayerController.PetState.Asleep);
+        stateModifier = playerController.currentPetState == PlayerController.PetState.Asleep ? 0.5f : 1f;
     }
 
     void Update()
     {
-        // Reduce la barra de hambre con el tiempo
-        hambreBarra.fillAmount -= hambreDecayRate * Time.deltaTime;
-        PlayerPrefs.SetFloat("hambre",hambreBarra.fillAmount);
-        // Reduce la barra de hambre con el tiempo
-        carinoBarra.fillAmount -= carinoDecayRate * Time.deltaTime;
-        PlayerPrefs.SetFloat("carino",hambreBarra.fillAmount);
-        // Reduce la barra de hambre con el tiempo
-        diversionBarra.fillAmount -= diversionDecayRate * Time.deltaTime;
-        PlayerPrefs.SetFloat("diversion",hambreBarra.fillAmount);
+        // Ajustar la tasa de decaimiento según el estado de la mascota
+        stateModifier = playerController.currentPetState == PlayerController.PetState.Asleep ? 0.5f : 1f;
 
-        // Comprueba si la barra de hambre ha llegado a cero
+        // Reduce las barras con el tiempo
+        hambreBarra.fillAmount -= hambreDecayRate * stateModifier * Time.deltaTime;
+        PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
+        
+        carinoBarra.fillAmount -= carinoDecayRate * stateModifier * Time.deltaTime;
+        PlayerPrefs.SetFloat("carino", carinoBarra.fillAmount);
+        
+        diversionBarra.fillAmount -= diversionDecayRate * stateModifier * Time.deltaTime;
+        PlayerPrefs.SetFloat("diversion", diversionBarra.fillAmount);
+
+        // Comprueba si las barras han llegado a cero
         if (hambreBarra.fillAmount <= 0)
         {
-            hambreBarra.fillAmount = 0; // Aseg�rate de que no vaya por debajo de cero
-            PlayerPrefs.SetFloat("hambre",hambreBarra.fillAmount);
-            // Reproduce la animaci�n de hambre
-            petAnimator.SetTrigger("IsHungry");
+            hambreBarra.fillAmount = 0; // Asegúrate de que no vaya por debajo de cero
+            PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
+            // Reproduce la animación de hambre
+            playerController.petAnimator.SetTrigger("IsHungry");
         }
     }
+
     public void SubirHambre()
     {
         hambreBarra.fillAmount += hambreIncremento / 100f;
-        PlayerPrefs.SetFloat("hambre",hambreBarra.fillAmount);
+        PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
 
         // Asegurarse de que la barra no supere 1
         hambreBarra.fillAmount = Mathf.Clamp01(hambreBarra.fillAmount);
-        PlayerPrefs.SetFloat("hambre",hambreBarra.fillAmount);
+        PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
     }
 
     void OnMouseOver()
@@ -79,6 +92,6 @@ public class BarrasDeVida : MonoBehaviour
     private void aumentarCariño()
     {
         carinoBarra.fillAmount += carinoIncremento * Time.deltaTime;
-        PlayerPrefs.SetFloat("carino",carinoBarra.fillAmount);
+        PlayerPrefs.SetFloat("carino", carinoBarra.fillAmount);
     }
 }
