@@ -8,6 +8,8 @@ public class PlayerControllerRun : MonoBehaviour
     private Rigidbody rb;
     private bool isGrounded;
 
+    public Animator animator;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -18,6 +20,7 @@ public class PlayerControllerRun : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetTrigger("Jump");
         }
         if(gameObject.transform.position.x <= death.transform.position.x)
         {
