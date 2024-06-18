@@ -6,20 +6,39 @@ public class DineroManager : MonoBehaviour
     public int dineroInicial = 0; // Define el dinero inicial
     public int dineroActual; // Variable para almacenar el dinero actual
 
-    public TextMeshProUGUI dineroContador;
+    public TextMeshProUGUI dineroContador; // Asegúrate de asignar este campo en el Inspector
+    public GameObject comidaComprada; // Asegúrate de asignar este campo en el Inspector
 
-    public GameObject comidaComprada;
+    private void Start()
+    {
+        // Cargar el dinero guardado, si existe, o establecer el valor inicial
+        dineroActual = PlayerPrefs.GetInt("Dinero", dineroInicial);
+
+        if (comidaComprada != null)
+        {
+            comidaComprada.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("La referencia a comidaComprada no está asignada en el Inspector.");
+        }
+    }
 
     private void Update()
     {
         UpdateDineroUI();
     }
 
-    void Start()
+    private void UpdateDineroUI()
     {
-        // Cargar el dinero guardado, si existe, o establecer el valor inicial
-        dineroActual = PlayerPrefs.GetInt("Dinero", dineroInicial);
-        comidaComprada.SetActive(false);
+        if (dineroContador != null)
+        {
+            dineroContador.text = "Dinero: " + dineroActual.ToString();
+        }
+        else
+        {
+            Debug.LogError("La referencia a dineroContador no está asignada en el Inspector.");
+        }
     }
 
     void GuardarDinero()
@@ -28,32 +47,24 @@ public class DineroManager : MonoBehaviour
         PlayerPrefs.SetInt("Dinero", dineroActual);
         PlayerPrefs.Save(); // Asegúrate de guardar los cambios
     }
-    private void UpdateDineroUI()
-    {
-        dineroContador.text = "Dinero: " + dineroActual.ToString();
-    }
 
-    // Método para añadir dinero
     public void AnadirDinero(int cantidad)
     {
         dineroActual += cantidad;
         GuardarDinero(); // Guardar el dinero actualizado
     }
 
-    // Método para restar dinero
     public void RestarDinero(int cantidad)
     {
         dineroActual -= cantidad;
         GuardarDinero(); // Guardar el dinero actualizado
     }
 
-    // Método para obtener el dinero actual
     public int ObtenerDinero()
     {
         return dineroActual;
     }
 
-    // Método para reiniciar el dinero a cero
     public void ReiniciarDinero()
     {
         dineroActual = 0;
@@ -67,9 +78,16 @@ public class DineroManager : MonoBehaviour
             // Restar 50 de dinero al comprar comida
             RestarDinero(50);
             Debug.Log("Comida comprada. Dinero restante: " + dineroActual);
-            // Aquí colocarías el código para activar la lógica de comprar la comida
 
-            comidaComprada.SetActive(true);
+            // Aquí colocarías el código para activar la lógica de comprar la comida
+            if (comidaComprada != null)
+            {
+                comidaComprada.SetActive(true);
+            }
+            else
+            {
+                Debug.LogError("La referencia a comidaComprada no está asignada en el Inspector.");
+            }
         }
         else
         {
@@ -78,4 +96,5 @@ public class DineroManager : MonoBehaviour
         }
     }
 }
+
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector
+    public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector, si es necesario
 
     public enum PetState { Awake, Asleep }
     public PetState currentPetState;
@@ -32,8 +32,12 @@ public class PlayerController : MonoBehaviour
         PlayerPrefs.SetInt("petState", (int)currentPetState);
         PlayerPrefs.Save(); // Asegurar que el estado se guarde
 
-        // Establecer el parámetro del animator
-        petAnimator.SetBool("dormido", true);
+        // Verificar que petAnimator esté asignado antes de usarlo
+        if (petAnimator != null)
+        {
+            // Establecer el parámetro del animator
+            petAnimator.SetBool("dormido", true);
+        }
     }
 
     public void SetPetStateToAwake()
@@ -41,7 +45,12 @@ public class PlayerController : MonoBehaviour
         currentPetState = PetState.Awake;
         PlayerPrefs.SetInt("petState", (int)currentPetState);
         PlayerPrefs.Save();
-        petAnimator.SetBool("dormido", false);
+
+        // Verificar que petAnimator esté asignado antes de usarlo
+        if (petAnimator != null)
+        {
+            petAnimator.SetBool("dormido", false);
+        }
     }
 
     public void SetPetStateToAsleep()
@@ -49,7 +58,12 @@ public class PlayerController : MonoBehaviour
         currentPetState = PetState.Asleep;
         PlayerPrefs.SetInt("petState", (int)currentPetState);
         PlayerPrefs.Save();
-        petAnimator.SetBool("dormido", true);
+
+        // Verificar que petAnimator esté asignado antes de usarlo
+        if (petAnimator != null)
+        {
+            petAnimator.SetBool("dormido", true);
+        }
     }
 
     public bool IsPetAwake()
