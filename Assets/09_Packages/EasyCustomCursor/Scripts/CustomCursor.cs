@@ -1,121 +1,101 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class CustomCursor : MonoBehaviour
 {
-    [Header("Sprite Sizes")]
-    [Tooltip("The width in pixels of the sprite that will be used as cursor.")]
-    public float SpriteWidth;
-    [Tooltip("The height in pixels of the sprite that will be used as cursor.")]
-    public float SpriteHeight;
-    
-    [Header("Cursor Sprites")]
-    [Tooltip("Sprite for when the cursor is in its default state.")]
-    public Sprite DefaultState;
-    [Tooltip("Sprite for when the left mouse button is held. If no sprite is set, the default will be used.")]
-    public Sprite LeftClickHeld;
-    [Tooltip("Sprite for when the left mouse button is held. If no sprite is set, the default will be used.")]
-    public Sprite RightClickHeld;
+    [Header("Cursor Textures")]
+    [Tooltip("Cursor texture for when the cursor is in its default state.")]
+    public Texture2D DefaultCursor;
+    [Tooltip("Cursor texture for when the left mouse button is held.")]
+    public Texture2D LeftClickCursor;
+    [Tooltip("Cursor texture for when the right mouse button is held.")]
+    public Texture2D RightClickCursor;
+    [Tooltip("Cursor texture for when the scroll button is used for scrolling.")]
+    public Texture2D ScrollingCursor;
+    [Tooltip("Cursor texture for when the scroll button is held.")]
+    public Texture2D ScrollButtonHeldCursor;
+    [Tooltip("Cursor texture for when the cursor is hovering over a clickable object.")]
+    public Texture2D HoverCursor;
 
-    [Space(10)]
-    [Tooltip("Sprite for when the scroll button is used for scrolling. If no sprite is set, the default will be used.")]
-    public Sprite Scrolling;
-    [Tooltip("Sprite for when the scroll button is held. If no sprite is set, the default will be used.")]
-    public Sprite ScrollButtonHeld;
-
-    [Space(10)]
-    [Tooltip("If set, activates this particle system at the cursor, creating a trail.")]
-    public ParticleSystem ParticleSystem;
-
-    private Image _cursorImage;
     private CustomCursorInputs _controls;
-    private bool _usingInputSystem;
+    private bool isHovering;
 
     private void Awake()
     {
         _controls = new CustomCursorInputs();
-        
+
         // Left-click
         _controls.CustomCursor.LeftClicking.performed += _ => OnLeftClick();
-        _controls.CustomCursor.LeftClicking.canceled += _ => Invoke("SetDefaultState", 0.15f);
-        
+        _controls.CustomCursor.LeftClicking.canceled += _ => Invoke("SetDefaultCursor", 0.15f);
+
         // Right-click
         _controls.CustomCursor.RightClicking.performed += _ => OnRightClick();
-        _controls.CustomCursor.RightClicking.canceled += _ => Invoke("SetDefaultState", 0.15f);
-        
+        _controls.CustomCursor.RightClicking.canceled += _ => Invoke("SetDefaultCursor", 0.15f);
+
         // Scroll button clicked
         _controls.CustomCursor.ScrollClicking.performed += _ => OnScrollClick();
-        _controls.CustomCursor.ScrollClicking.canceled += _ => Invoke("SetDefaultState", 0.15f);
-        
+        _controls.CustomCursor.ScrollClicking.canceled += _ => Invoke("SetDefaultCursor", 0.15f);
+
         // Scrolling
         _controls.CustomCursor.Scrolling.performed += _ => OnScrolling();
-        _controls.CustomCursor.Scrolling.canceled += _ => Invoke("SetDefaultState", 0.5f);
+        _controls.CustomCursor.Scrolling.canceled += _ => Invoke("SetDefaultCursor", 0.5f);
 
-        _cursorImage = GetComponent<Image>();
-        if (DefaultState == null)
+        if (DefaultCursor == null)
         {
-            throw new Exception("You need to set the default Sprite!");
+            throw new Exception("You need to set the default cursor texture!");
         }
-        
+
         // Set the cursor to the default state
-        SetCurrSprite(DefaultState);
-        
-        if (ParticleSystem != null)
-        {
-            // Place the particle system on the cursor and start playing it
-            ParticleSystem.transform.position = this.transform.position;
-            ParticleSystem.transform.parent = this.transform;
-            ParticleSystem.Play();
-        }
-    }
-    
-    void Update()
-    {
-        Cursor.visible = false;
-        Vector3 CursorPos = Mouse.current.position.ReadValue();
-        _cursorImage.transform.position = CursorPos;
+        SetCursorTexture(DefaultCursor);
     }
 
-    private void SetCurrSprite(Sprite newSprite)
+    private void SetCursorTexture(Texture2D cursorTexture)
     {
-        if (newSprite == null)
-        {
-            return;
-        }
-        _cursorImage.sprite = newSprite;
-        _cursorImage.rectTransform.sizeDelta = new Vector2(SpriteWidth, SpriteHeight);
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
     }
-    
+
     private void OnLeftClick()
     {
-        SetCurrSprite(LeftClickHeld);
+        SetCursorTexture(LeftClickCursor);
     }
-    
+
     private void OnRightClick()
     {
-       SetCurrSprite(RightClickHeld);
+        SetCursorTexture(RightClickCursor);
     }
-    
+
     private void OnScrollClick()
     {
-        SetCurrSprite(ScrollButtonHeld);
+        SetCursorTexture(ScrollButtonHeldCursor);
     }
 
     private void OnScrolling()
     {
-        SetCurrSprite(Scrolling);
+        SetCursorTexture(ScrollingCursor);
     }
 
-    private void SetDefaultState()
+    private void SetDefaultCursor()
     {
-        SetCurrSprite(DefaultState);
+        if (isHovering)
+        {
+            SetCursorTexture(HoverCursor);
+        }
+        else
+        {
+            SetCursorTexture(DefaultCursor);
+        }
+    }
+
+    public void SetHoverState(bool isHovering)
+    {
+        this.isHovering = isHovering;
+        SetCursorTexture(isHovering ? HoverCursor : DefaultCursor);
     }
 
     private void OnEnable()
     {
-         _controls.Enable();
+        _controls.Enable();
     }
 
     private void OnDisable()

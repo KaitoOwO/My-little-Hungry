@@ -89,20 +89,24 @@ public class LocationBasedTimeController : MonoBehaviour
         sunLight.transform.rotation = Quaternion.Euler(new Vector3(sunAngle - 90f, 170f, 0f));
 
         // Determinar el color de la luz del sol basado en la hora del día
-        if (localTime.Hour >= 6 && localTime.Hour < 12) // Mañana
+        if (localTime.Hour >= 6 && localTime.Hour < 11) // Mañana
         {
+            Debug.Log("mañana");
             sunLight.color = morningColor;
         }
-        else if (localTime.Hour >= 12 && localTime.Hour < 18) // Día
+        else if (localTime.Hour >= 11 && localTime.Hour < 18) // Día
         {
+            Debug.Log("dia");
             sunLight.color = dayColor;
         }
         else if (localTime.Hour >= 18 && localTime.Hour < 21) // Tarde
         {
+            Debug.Log("tarde");
             sunLight.color = eveningColor;
         }
-        else // Noche
+        else if (localTime.Hour >= 21 && localTime.Hour < 6)// Noche
         {
+            Debug.Log("noche");
             sunLight.color = nightColor;
         }
     }
@@ -115,17 +119,17 @@ public class LocationBasedTimeController : MonoBehaviour
 
         // Determinar la exposición basada en la hora del día
         float exposure;
-        if (localTime.Hour >= 6 && localTime.Hour < 12) // Mañana
+        if (localTime.Hour >= 6 && localTime.Hour < 11) // Mañana
         {
             lightsNight.SetActive(false);
             exposure = morningExposure;
         }
-        else if (localTime.Hour >= 12 && localTime.Hour < 18) // Día
+        else if (localTime.Hour >= 11 && localTime.Hour < 17) // Día
         {
             lightsNight.SetActive(false);
             exposure = dayExposure;
         }
-        else if (localTime.Hour >= 18 && localTime.Hour < 21) // Tarde
+        else if (localTime.Hour >= 17 && localTime.Hour < 19) // Tarde
         {
             lightsNight.SetActive(true);
             exposure = eveningExposure;
