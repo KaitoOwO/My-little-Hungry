@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Cama : MonoBehaviour
 {
-    public DollyTrackManager dollyTrackManager; // Referencia al script DollyTrackManager
+    public CambioDollyTrackObjetos dollyTrackManager; // Referencia al script DollyTrackManager
 
     void Update()
     {

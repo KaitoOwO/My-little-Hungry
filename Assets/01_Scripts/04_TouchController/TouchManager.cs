@@ -4,13 +4,12 @@ using Cinemachine;
 
 public class TouchManager : MonoBehaviour
 {
-    // The variables
     public Transform playerCam;
-    public float rotateSpeed = 10f; // Aumenta la velocidad para rotación continua
+    public float rotateSpeed = 10f;
     public float limitRight = 45f;
     public float limitLeft = -45f;
     public SwipeListener swipeListener;
-    public CinemachineVirtualCamera virtualCamera; // Referencia a la cámara virtual
+    public CinemachineVirtualCamera virtualCamera;
 
     private bool isRotating = false;
     private float rotationDirection = 0f;
@@ -28,7 +27,6 @@ public class TouchManager : MonoBehaviour
 
     private void Start()
     {
-        // Obtener el componente CinemachineTrackedDolly de la cámara virtual
         trackedDolly = virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
     }
 
@@ -48,7 +46,7 @@ public class TouchManager : MonoBehaviour
             if (CanRotateCamera())
             {
                 isRotating = true;
-                rotationDirection = swipe == "Right" ? -1f : 1f; // Positive value for right rotation, negative for left
+                rotationDirection = swipe == "Right" ? -1f : 1f;
             }
             else
             {
@@ -66,7 +64,6 @@ public class TouchManager : MonoBehaviour
         playerCam.Rotate(0, rotationAmount, 0);
         ClampCameraRotation();
 
-        // Verificar si el ángulo Y está en el rango permitido
         float yRotation = playerCam.eulerAngles.y;
         if (yRotation > 180)
         {
@@ -81,6 +78,9 @@ public class TouchManager : MonoBehaviour
 
     void ClampCameraRotation()
     {
+        // Limitar la rotación en el eje X a 0
+        playerCam.eulerAngles = new Vector3(0, playerCam.eulerAngles.y, playerCam.eulerAngles.z);
+        
         float yRotation = playerCam.eulerAngles.y;
         if (yRotation > 180)
         {
@@ -93,7 +93,6 @@ public class TouchManager : MonoBehaviour
 
     bool CanRotateCamera()
     {
-        // Verificar si la posición del dolly track es menor o igual a 0.25
-        return trackedDolly != null && trackedDolly.m_PathPosition <= 0.25f;
+        return trackedDolly != null && trackedDolly.m_PathPosition <= 0.15f;
     }
 }
