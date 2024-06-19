@@ -48,7 +48,7 @@ public class PlayerControllerRun : MonoBehaviour
             isGrounded = false;
         }
     }
-    private void GameOver()
+    public void GameOver()
     {
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;

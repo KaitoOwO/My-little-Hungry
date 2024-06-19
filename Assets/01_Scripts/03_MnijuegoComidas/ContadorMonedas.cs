@@ -62,7 +62,7 @@ public class ContadorMonedas : MonoBehaviour
         contadorVidas.text = "Vidas: " + vidas.ToString();
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
