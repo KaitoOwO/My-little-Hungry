@@ -1,13 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering.PostProcessing;
+
 
 namespace SlimUI.ModernMenu{
 	public class UISettingsManager : MonoBehaviour {
 
 		public enum Platform {Desktop, Mobile};
 		public Platform platform;
+		
+		[Header("VISUAL SETTINGS")]
+		public PostProcessVolume postProcessVolume; // El volumen de postprocesamiento
+		private Bloom bloomLayer;
+		private MotionBlur motionBlurLayer;
+		private AmbientOcclusion ambientOcclusionLayer;
+
 		// toggle buttons
 		[Header("MOBILE SETTINGS")]
 		public GameObject mobileSFXtext;
@@ -57,7 +65,7 @@ namespace SlimUI.ModernMenu{
 		
 
 		public void  Start (){
-			// check difficulty
+			/* check difficulty
 			if(PlayerPrefs.GetInt("NormalDifficulty") == 1){
 				difficultynormaltextLINE.gameObject.SetActive(true);
 				difficultyhardcoretextLINE.gameObject.SetActive(false);
@@ -66,13 +74,13 @@ namespace SlimUI.ModernMenu{
 			{
 				difficultyhardcoretextLINE.gameObject.SetActive(true);
 				difficultynormaltextLINE.gameObject.SetActive(false);
-			}
+			}*/
 
 			// check slider values
 			musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
-			sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
+			/*sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
 			sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
-			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
+			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");*/
 
 			// check full screen
 			if(Screen.fullScreen == true){
@@ -154,13 +162,13 @@ namespace SlimUI.ModernMenu{
 				vsynctext.GetComponent<TMP_Text>().text = "on";
 			}
 
-			// check mouse inverse
+			/* check mouse inverse
 			if(PlayerPrefs.GetInt("Inverted")==0){
 				invertmousetext.GetComponent<TMP_Text>().text = "off";
 			}
 			else if(PlayerPrefs.GetInt("Inverted")==1){
 				invertmousetext.GetComponent<TMP_Text>().text = "on";
-			}
+			}*/
 
 			// check motion blur
 			if(PlayerPrefs.GetInt("MotionBlur")==0){
@@ -197,13 +205,18 @@ namespace SlimUI.ModernMenu{
 				texturemedtextLINE.gameObject.SetActive(false);
 				texturehightextLINE.gameObject.SetActive(true);
 			}
-		}
-
-		public void Update (){
-			//sliderValue = musicSlider.GetComponent<Slider>().value;
-			sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
-			sliderValueYSensitivity = sensitivityYSlider.GetComponent<Slider>().value;
-			sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
+			
+			if (postProcessVolume == null)
+			{
+				Debug.LogError("Post Process Volume is not assigned in the inspector.");
+				return;
+			}
+			if (postProcessVolume != null) {
+				// Obtén el efecto MotionBlur del perfil de postprocesado
+				postProcessVolume.profile.TryGetSettings(out motionBlurLayer);
+				postProcessVolume.profile.TryGetSettings(out ambientOcclusionLayer);
+				postProcessVolume.profile.TryGetSettings(out bloomLayer);
+			}
 		}
 
 		public void FullScreen (){
@@ -375,10 +388,12 @@ namespace SlimUI.ModernMenu{
 		public void MotionBlur (){
 			if(PlayerPrefs.GetInt("MotionBlur")==0){
 				PlayerPrefs.SetInt("MotionBlur",1);
+				motionBlurLayer.active = true;
 				motionblurtext.GetComponent<TMP_Text>().text = "on";
 			}
 			else if(PlayerPrefs.GetInt("MotionBlur")==1){
 				PlayerPrefs.SetInt("MotionBlur",0);
+				motionBlurLayer.active = false;
 				motionblurtext.GetComponent<TMP_Text>().text = "off";
 			}
 		}
@@ -386,10 +401,12 @@ namespace SlimUI.ModernMenu{
 		public void AmbientOcclusion (){
 			if(PlayerPrefs.GetInt("AmbientOcclusion")==0){
 				PlayerPrefs.SetInt("AmbientOcclusion",1);
+				ambientOcclusionLayer.active = true;
 				ambientocclusiontext.GetComponent<TMP_Text>().text = "on";
 			}
 			else if(PlayerPrefs.GetInt("AmbientOcclusion")==1){
 				PlayerPrefs.SetInt("AmbientOcclusion",0);
+				ambientOcclusionLayer.active = false;
 				ambientocclusiontext.GetComponent<TMP_Text>().text = "off";
 			}
 		}
@@ -397,10 +414,12 @@ namespace SlimUI.ModernMenu{
 		public void CameraEffects (){
 			if(PlayerPrefs.GetInt("CameraEffects")==0){
 				PlayerPrefs.SetInt("CameraEffects",1);
+				bloomLayer.enabled.value = true;
 				cameraeffectstext.GetComponent<TMP_Text>().text = "on";
 			}
-			else if(PlayerPrefs.GetInt("CameraEffects")==1){
-				PlayerPrefs.SetInt("CameraEffects",0);
+			else if(PlayerPrefs.GetInt("CameraEffects")==1) {
+				PlayerPrefs.SetInt("CameraEffects", 0);
+				bloomLayer.enabled.value = false;
 				cameraeffectstext.GetComponent<TMP_Text>().text = "off";
 			}
 		}

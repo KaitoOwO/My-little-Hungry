@@ -70,7 +70,7 @@ namespace SlimUI.ModernMenu {
             if (extrasMenu) extrasMenu.SetActive(false);
             firstMenu.SetActive(true);
             mainMenu.SetActive(true);
-
+            
             SetThemeColors();
         }
 
