@@ -119,8 +119,8 @@ namespace SlimUI.ModernMenu {
             playMenu.SetActive(false);
             if (extrasMenu) extrasMenu.SetActive(false);
             exitMenu.SetActive(false);
-            tittleImage.SetActive(true);
             mainMenu.SetActive(true);
+            tittleImage.SetActive(true);
         }
 
         public void LoadScene(string scene) {

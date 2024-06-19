@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject canvasUIWorld;
     public Animator petAnimator; // Asigna el Animator de tu mascota desde el Inspector, si es necesario
 
     public enum PetState { Awake, Asleep }
@@ -40,6 +41,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void activarUI()
+    {
+        canvasUIWorld.SetActive(true);
+    }
+    public void ocultarUI()
+    {
+        canvasUIWorld.SetActive(false);
+    }
     public void SetPetStateToAwake()
     {
         currentPetState = PetState.Awake;

@@ -14,9 +14,15 @@ public class BarrasDeVida : MonoBehaviour
     public Image diversionBarra; // Asigna la imagen circular desde el Inspector
     public float diversionDecayRate = 0.1f; // La velocidad a la que disminuye la barra de diversión
 
-    // Animator
-    public Animator animator; // Referencia al componente Animator del objeto
-    public AnimatorOverrideController overrideController; // Referencia al Animator Override Controller
+    public PlayerController playerController;
+
+    // Añadir referencias a los materiales
+    public Material material0;
+    public Material material1;
+    public Material material2;
+
+    // Añadir referencia al Renderer de la mascota
+    public Renderer petRenderer;
 
     private float stateModifier = 1f;
 
@@ -32,7 +38,7 @@ public class BarrasDeVida : MonoBehaviour
             PlayerPrefs.SetFloat("hambre", 1f);
             PlayerPrefs.SetFloat("carino", 1f);
             PlayerPrefs.SetFloat("diversion", 1f);
-            PlayerPrefs.SetInt("petState", (int)PetState.Asleep);
+            PlayerPrefs.SetInt("petState", (int)PlayerController.PetState.Asleep);
 
             // Guardar los cambios
             PlayerPrefs.Save();
@@ -41,26 +47,23 @@ public class BarrasDeVida : MonoBehaviour
 
     void Start()
     {
-        // Asignar el Animator Override Controller al componente Animator
-        if (animator != null && overrideController != null)
-        {
-            animator.runtimeAnimatorController = overrideController;
-        }
-
         // Inicializa las barras 
         hambreBarra.fillAmount = PlayerPrefs.GetFloat("hambre");
         carinoBarra.fillAmount = PlayerPrefs.GetFloat("carino");
         diversionBarra.fillAmount = PlayerPrefs.GetFloat("diversion");
 
         // Recuperar el estado de la mascota
-        currentPetState = (PetState)PlayerPrefs.GetInt("petState", (int)PetState.Asleep);
-        stateModifier = currentPetState == PetState.Asleep ? 0.5f : 1f;
+        playerController.currentPetState = (PlayerController.PetState)PlayerPrefs.GetInt("petState", (int)PlayerController.PetState.Asleep);
+        stateModifier = playerController.currentPetState == PlayerController.PetState.Asleep ? 0.5f : 1f;
+
+        // Inicializar el material de la mascota basado en el nivel de hambre
+        ActualizarMaterialHambre();
     }
 
     void Update()
     {
         // Ajustar la tasa de decaimiento según el estado de la mascota
-        stateModifier = currentPetState == PetState.Asleep ? 0.5f : 1f;
+        stateModifier = playerController.currentPetState == PlayerController.PetState.Asleep ? 0.5f : 1f;
 
         // Reduce las barras con el tiempo
         hambreBarra.fillAmount -= hambreDecayRate * stateModifier * Time.deltaTime;
@@ -78,8 +81,11 @@ public class BarrasDeVida : MonoBehaviour
             hambreBarra.fillAmount = 0; // Asegúrate de que no vaya por debajo de cero
             PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
             // Reproduce la animación de hambre
-            animator.SetBool("IsHungry",true);
+            playerController.petAnimator.SetTrigger("IsHungry");
         }
+
+        // Actualizar el material basado en el nivel de hambre
+        ActualizarMaterialHambre();
     }
 
     public void SubirHambre()
@@ -90,24 +96,35 @@ public class BarrasDeVida : MonoBehaviour
         // Asegurarse de que la barra no supere 1
         hambreBarra.fillAmount = Mathf.Clamp01(hambreBarra.fillAmount);
         PlayerPrefs.SetFloat("hambre", hambreBarra.fillAmount);
+
+        // Actualizar el material basado en el nivel de hambre
+        ActualizarMaterialHambre();
     }
 
     void OnMouseOver()
     {
-        aumentarCarino();
+        aumentarCariño();
     }
 
-    private void aumentarCarino()
+    private void aumentarCariño()
     {
         carinoBarra.fillAmount += carinoIncremento * Time.deltaTime;
         PlayerPrefs.SetFloat("carino", carinoBarra.fillAmount);
     }
 
-    public enum PetState
+    private void ActualizarMaterialHambre()
     {
-        Asleep,
-        Awake
+        if (hambreBarra.fillAmount > 0.66f)
+        {
+            petRenderer.material = material0;
+        }
+        else if (hambreBarra.fillAmount > 0.33f)
+        {
+            petRenderer.material = material1;
+        }
+        else
+        {
+            petRenderer.material = material2;
+        }
     }
-
-    public PetState currentPetState; // Estado actual de la mascota
 }
