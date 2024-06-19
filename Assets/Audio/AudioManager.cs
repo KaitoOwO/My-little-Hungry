@@ -7,6 +7,11 @@ public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioController;
 
+    public AudioSource perroEnojado;
+    public AudioSource perroGrunendo;
+    public AudioSource durmiendo;
+    public AudioSource despertar;
+
     public void VolumenMaster(float slidervalue)
     {
         audioController.SetFloat("Master", Mathf.Log10(slidervalue) * 20);
@@ -18,5 +23,23 @@ public class AudioManager : MonoBehaviour
     public void VolumenSfx(float slidervalue)
     {
         audioController.SetFloat("SFX", Mathf.Log10(slidervalue) * 20);
+    }
+    public void PerroEnojado()
+    {
+        perroEnojado.Play();
+    }
+    public void PerroGrunendo()
+    {
+        perroGrunendo.Play();
+    }
+    public void Durmiendo()
+    {
+        durmiendo.Play();
+        despertar.Stop();
+    }
+    public void Despertar()
+    {
+        durmiendo.Stop();
+        despertar.Play();
     }
 }    
