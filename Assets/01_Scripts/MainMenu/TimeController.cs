@@ -5,6 +5,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class TimeController : MonoBehaviour
 {
     public GameObject lightsNight;
+    public GameObject lightsDoor;
     public PostProcessVolume postProcessVolume; // El volumen de postprocesamiento
     public Light sunLight; // La luz direccional que actúa como el sol
     public float dayDuration = 24f; // Duración del ciclo completo en horas de juego
@@ -65,24 +66,28 @@ public class TimeController : MonoBehaviour
         {
             Debug.Log("Mañana");
             lightsNight.SetActive(false);
+            lightsDoor.SetActive(false);
             sunLight.color = morningColor;
         }
         else if (localTime.Hour >= 12 && localTime.Hour < 18) // Día
         {
             Debug.Log("Día");
             lightsNight.SetActive(false);
+            lightsDoor.SetActive(false);
             sunLight.color = dayColor;
         }
         else if (localTime.Hour >= 18 && localTime.Hour < 21) // Tarde
         {
             Debug.Log("Tarde");
             lightsNight.SetActive(true);
+            lightsDoor.SetActive(true);
             sunLight.color = eveningColor;
         }
         else // Noche
         {
             Debug.Log("Noche");
             lightsNight.SetActive(true);
+            lightsDoor.SetActive(true);
             sunLight.color = nightColor;
         }
     }

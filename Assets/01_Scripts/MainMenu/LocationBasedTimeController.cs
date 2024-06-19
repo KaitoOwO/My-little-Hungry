@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 public class LocationBasedTimeController : MonoBehaviour
 {
     public GameObject lightsNight;
+    public GameObject lightsDoor;
     public Light sunLight; // La luz direccional que actúa como el sol
     public float dayDuration = 24f; // Duración del ciclo completo en horas de juego
     public float morningExposure = 1.0f;
@@ -122,21 +123,25 @@ public class LocationBasedTimeController : MonoBehaviour
         if (localTime.Hour >= 6 && localTime.Hour < 11) // Mañana
         {
             lightsNight.SetActive(false);
+            lightsDoor.SetActive(false);
             exposure = morningExposure;
         }
         else if (localTime.Hour >= 11 && localTime.Hour < 17) // Día
         {
             lightsNight.SetActive(false);
+            lightsDoor.SetActive(false);
             exposure = dayExposure;
         }
         else if (localTime.Hour >= 17 && localTime.Hour < 19) // Tarde
         {
             lightsNight.SetActive(true);
+            lightsDoor.SetActive(true);
             exposure = eveningExposure;
         }
         else // Noche
         {
             lightsNight.SetActive(true);
+            lightsDoor.SetActive(true);
             exposure = nightExposure;
         }
 
