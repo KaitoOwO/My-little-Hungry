@@ -5965,7 +5965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyboardSpeed: 40
-  mouseSpeed: 150
+  mouseSpeed: 500
   touchSpeed: 150
   minX: -11
   maxX: 11
