@@ -11,6 +11,7 @@ public class PlayerControllerRun : MonoBehaviour
     public AudioSource audioSalto;
 
     public Animator animator;
+    public Animator animatorDog;
 
     void Start()
     {
@@ -23,6 +24,7 @@ public class PlayerControllerRun : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetTrigger("Jump");
+            animatorDog.SetTrigger("Jump");
             audioSalto.Play();
         }
         if (gameObject.transform.position.x <= death.transform.position.x)
