@@ -25,4 +25,14 @@ public class UIButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             customCursor.SetHoverState(false);
         }
     }
+    
+    private void OnMouseEnter()
+    {
+        customCursor.SetHoverState(true);
+    }
+
+    private void OnMouseExit()
+    {
+        customCursor.SetHoverState(false);
+    }
 }
