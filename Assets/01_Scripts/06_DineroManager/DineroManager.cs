@@ -33,7 +33,7 @@ public class DineroManager : MonoBehaviour
     {
         if (dineroContador != null)
         {
-            dineroContador.text = "Dinero: " + dineroActual.ToString();
+            dineroContador.text = "Scrap: " + dineroActual.ToString();
         }
         else
         {
