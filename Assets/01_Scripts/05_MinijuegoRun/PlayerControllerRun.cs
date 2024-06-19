@@ -7,7 +7,7 @@ public class PlayerControllerRun : MonoBehaviour
     public GameObject death;
     private Rigidbody rb;
     private bool isGrounded;
-    
+
     public AudioSource audioSalto;
 
     public Animator animator;
@@ -25,7 +25,7 @@ public class PlayerControllerRun : MonoBehaviour
             animator.SetTrigger("Jump");
             audioSalto.Play();
         }
-        if(gameObject.transform.position.x <= death.transform.position.x)
+        if (gameObject.transform.position.x <= death.transform.position.x)
         {
             GameOver();
         }
@@ -51,4 +51,6 @@ public class PlayerControllerRun : MonoBehaviour
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
     }
+
+
 }

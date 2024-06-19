@@ -9,6 +9,9 @@ public class ContadorMonedas : MonoBehaviour
     public GameObject gameOverPanel;
     public TextMeshProUGUI contadorVidas;
 
+    public AudioSource ladra;
+    public AudioSource llora;
+
     void Start()
     {
         UpdateVidasUI();
@@ -35,12 +38,16 @@ public class ContadorMonedas : MonoBehaviour
 
             // Destruir la moneda
             Destroy(other.gameObject);
+
+            ladra.Play();
         }
 
         if (other.gameObject.CompareTag("CarneMala"))
         {
             PerderVidas();
             Destroy(other.gameObject);
+
+            llora.Play();
         }
     }
 

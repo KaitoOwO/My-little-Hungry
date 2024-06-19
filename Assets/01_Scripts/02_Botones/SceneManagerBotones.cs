@@ -9,12 +9,12 @@ public class SceneManagerBotones : MonoBehaviour
     }
     public void SalirAlInicio()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     public void SalirAlMenu()
     {
         PlayerPrefs.SetFloat("diversion", 1f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void Reiniciar()
@@ -32,15 +32,15 @@ public class SceneManagerBotones : MonoBehaviour
         PlayerPrefs.SetFloat("hambre", 1f);
         PlayerPrefs.SetFloat("carino", 1f);
         PlayerPrefs.SetFloat("diversion", 1f);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(4);
     }
     public void MiniScrap()
     {
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(2);
     }
     public void MiniRun()
     {
-        SceneManager.LoadScene(4);
+        SceneManager.LoadScene(3);
     }
 
 }
