@@ -106,7 +106,6 @@ namespace SlimUI.ModernMenu {
             cameraAnimator.SetTrigger("play");
             puertaAnimator.SetTrigger("play");
             StartCoroutine(StartFadeAfterDelay(5.0f));
-            StartCoroutine(LoadAsynchronously("01_Main"));
         }
 
         public void PlayCampaignMobile() {
@@ -287,6 +286,8 @@ namespace SlimUI.ModernMenu {
                 fadeImage.color = color;
                 yield return null;
             }
+            
+            LoadScene(sceneName);
         }
 
         // Coroutine to start fade after delay
