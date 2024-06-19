@@ -48,10 +48,11 @@ public class Freezer : MonoBehaviour
             canvasRefrigerador.SetBool("canvasActivado", true);
             Debug.Log("Refrigerador abierto");
         }
+        
         isOpen = true;
     }
 
-    void CloseFreezer()
+    public void CloseFreezer()
     {
         if (freezerAnim != null)
         {
@@ -65,7 +66,6 @@ public class Freezer : MonoBehaviour
         {
             dollyTrackManager.ResetDollyTrack();
         }
-        
         isOpen = false;
     }
 }

@@ -7,6 +7,8 @@ public class TV : MonoBehaviour
     public GameObject botonPrender;
     public Animator tvAnimation;
 
+    private bool isOn = false;
+
     void Update()
     {
         // Verificar si se hace clic con el mouse
@@ -19,21 +21,52 @@ public class TV : MonoBehaviour
             // Verificar si el rayo intersecta con el collider de algún objeto
             if (Physics.Raycast(ray, out hit))
             {
-                // Verificar si el objeto clicado es el botónPrender
-                if (hit.collider.gameObject == botonApagar)
-                {
-                    // Llamar al método que resetea el dolly track a 0
-                    if (dollyTrackManager != null)
-                    {
-                        tvAnimation.SetBool("prendido", false);
-                        dollyTrackManager.ResetDollyTrack();
-                    }
-                }
+                // Verificar si el objeto clicado es el botón de encendido o apagado
                 if (hit.collider.gameObject == botonPrender)
                 {
-                    tvAnimation.SetBool("prendido", true);
+                    if (!isOn)
+                    {
+                        // Si la TV está apagada, encenderla
+                        TurnOnTV();
+                    }
+                }
+                else if (hit.collider.gameObject == botonApagar)
+                {
+                    if (isOn)
+                    {
+                        // Si la TV está encendida, apagarla
+                        TurnOffTV();
+                    }
                 }
             }
         }
+    }
+
+    void TurnOnTV()
+    {
+        if (tvAnimation != null)
+        {
+            tvAnimation.SetBool("prendido", true);
+            Debug.Log("TV encendida");
+        }
+
+        isOn = true;
+    }
+
+    public void TurnOffTV()
+    {
+        if (tvAnimation != null)
+        {
+            tvAnimation.SetBool("prendido", false);
+            Debug.Log("TV apagada");
+        }
+
+        // Llamar al método que resetea el dolly track a 0
+        if (dollyTrackManager != null)
+        {
+            dollyTrackManager.ResetDollyTrack();
+        }
+
+        isOn = false;
     }
 }

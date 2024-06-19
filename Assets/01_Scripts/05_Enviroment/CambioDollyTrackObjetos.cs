@@ -3,6 +3,7 @@ using Cinemachine;
 
 public class CambioDollyTrackObjetos : MonoBehaviour
 {
+    public GameObject canvasWorldButtons;
     public PlayerController playerController;
     public Transform cameraTransform; // Referencia al transform de la cámara
     public CinemachineSmoothPath dollyTrackCenter; // Dolly track para el centro
@@ -97,14 +98,17 @@ public class CambioDollyTrackObjetos : MonoBehaviour
                     case "Televisor": // Aquí se usa el argumento interactiveObject
                         virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
                         Debug.Log("Televisor interactivo");
+                        canvasWorldButtons.SetActive(true);
                         break;
                     case "Refrigerador": // También se usa el argumento interactiveObject
                         virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
                         Debug.Log("Refrigerador interactivo");
+                        canvasWorldButtons.SetActive(true);
                         break;
                     case "Puerta": // También se usa el argumento interactiveObject
                         virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
                         Debug.Log("Puerta interactiva");
+                        canvasWorldButtons.SetActive(true);
                         break;
                     // Puedes agregar más cases según tus necesidades
                     default:
@@ -120,6 +124,7 @@ public class CambioDollyTrackObjetos : MonoBehaviour
         var dolly = virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
         dolly.m_PathPosition = 0f;
         Debug.Log("Dolly track reseteado a 0");
+        canvasWorldButtons.SetActive(false);
     }
     
     public void SetToDollyTrackCenter()

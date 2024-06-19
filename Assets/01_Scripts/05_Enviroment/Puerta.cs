@@ -51,7 +51,7 @@ public class Puerta : MonoBehaviour
         isOpen = true;
     }
 
-    void CloseDoor()
+    public void CloseDoor()
     {
         if (puertaAnim != null)
         {
