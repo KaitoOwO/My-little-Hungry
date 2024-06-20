@@ -99,8 +99,12 @@ public class CambioDollyTrackObjetos : MonoBehaviour
                         Debug.Log("Televisor interactivo");
                         break;
                     case "Refrigerador": // También se usa el argumento interactiveObject
-                        virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 3f;
+                        virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
                         Debug.Log("Refrigerador interactivo");
+                        break;
+                    case "Puerta": // También se usa el argumento interactiveObject
+                        virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 2f;
+                        Debug.Log("Puerta interactiva");
                         break;
                     // Puedes agregar más cases según tus necesidades
                     default:

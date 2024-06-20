@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class Freezer : MonoBehaviour
@@ -64,6 +65,7 @@ public class Freezer : MonoBehaviour
         {
             dollyTrackManager.ResetDollyTrack();
         }
+        
         isOpen = false;
     }
 }
